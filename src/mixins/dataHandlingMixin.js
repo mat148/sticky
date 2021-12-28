@@ -1,5 +1,6 @@
 //This global mixin handles getting, editing, and deleting the data both locally and through the API.
 const axios = require('axios');
+const _ = require('underscore');
 
 export default {
     methods: {
@@ -69,42 +70,39 @@ export default {
                 });
             });
         },
-        updateStickyNotes(apiNote) {
-            //Loop through all the notes in response.data
-            //Find matching id in $store stickyNotes
-            //If no match, add a new entry to $store stickyNotes
-            //If match
-                //Check content match, update or skip
-            console.log(apiNote._id);
-
+        updateStickyNotes() {
+            //There has to be a better way to do all 3 of these methods
             this.apiGetAllStickyNotes().then(response => {
-                //var foundNote;
+                //Check if we need to update or create a new note
+                _.each(response.data, (apiNote) => {
+                    var apiID = apiNote._id;
+                    var localFoundNote = _.findWhere(this.$store.state.stickyNotes, {_id: apiID});
 
-                console.log(response.data);
-                console.log(this.$store.state.stickyNotes);
-
-                //This will loop through all of the notes recieved from the database.
-                /*_.each(response.data, () => {
-                    //console.log(note);
-
-                    //Loop through all notes in $store and return with matching id
-                    foundNote = _.find(this.$store.state.stickyNotes, localNote => {
-                        if(localNote._id == apiNote._id) {
-                            return localNote;
-                        }
-                    });
-                });*/
-                //console.log(foundNote);
-                //this.$store.state.stickyNotes.splice(foundNote);
-            });
-            
-            /*this.apiGetAllStickyNotes().then((response) => {
-                _.each(response.data, () => {
-                    //console.log(note);
-                    var foundNote = _.find(this.$store.state.stickyNotes, (note) => {return note._id = id;});
-                    console.log(foundNote);
+                    if(localFoundNote != undefined) {
+                        //Update local note
+                        var index = _.indexOf(this.$store.state.stickyNotes, localFoundNote);
+                        this.$store.commit('updateStickyNote', {
+                            index: index,
+                            note: apiNote
+                        });
+                    } else {
+                        //Create a new local note
+                        this.$store.commit('addStickyNote', {
+                            note: apiNote
+                        });
+                    }
                 });
-            });*/
+
+                //Check if we need to delete a local note
+                var difference = _.difference(this.$store.state.stickyNotes, response.data);
+                if(difference.length > 0) {
+                    _.each(difference, (noteToBeDeleted) => {
+                        this.$store.commit('removeStickyNote', {
+                            noteToBeDeleted: noteToBeDeleted
+                        });
+                    });
+                }
+            });
         }
     }
 }

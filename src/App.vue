@@ -5,6 +5,8 @@
       <sticky-note v-for="sticky in this.$store.state.stickyNotes" :key="sticky._id" :note="sticky"></sticky-note>
     </div>
 
+    <button @click="this.updateStickyNotes">Update list</button>
+
     <create-sticky-modal></create-sticky-modal>
     <cookie-yes-modal></cookie-yes-modal>
     <cookie-no-modal></cookie-no-modal>
@@ -43,12 +45,14 @@
       this.checkLocalCookies();
       this.getAllStickyNotes();
 
-      /*const self = this;
+      //this.updateStickyNotes();
+
+      const self = this;
       setInterval(function(){
-        self.getAllSticky();
+        self.updateStickyNotes();
         console.log('Refresh sticky notes list');
-      }, 15000);*/
-      //900000
+      }, 900000);
+      //15000
     },
     methods: {
       checkLocalCookies: async function() {
