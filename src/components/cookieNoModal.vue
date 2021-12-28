@@ -1,6 +1,7 @@
 <template>
     <modal v-show="cookieNoModalVisable" @close="cookieNoModalVisable = false">
       <template v-slot:body>
+        <button @click="cookieNoModalVisable = false">X</button>
         Your cookies have been disabled. If you would like to edit or delete your posted notes please re-enable cookies and refresh this page before creating a note.
         If not you can still create notes without cookies.
       </template>

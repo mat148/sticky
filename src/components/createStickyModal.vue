@@ -13,8 +13,6 @@
 </template>
 
 <script>
-    import fingerPrintMixin from '../mixins/fingerPrintMixin';
-
     export default {
         data: function() {
             return {
@@ -22,12 +20,11 @@
                 message: ''
             }
         },
-        mixins: [fingerPrintMixin],
         methods: {
             async submitModal(message) {
                 console.log(message);
 
-                await this.createNewStickyNote(message).then(() => {
+                this.createNewStickyNote(message).then(() => {
                     this.isCreateStickyModalVisable = false;
                     this.message = '';
                 });

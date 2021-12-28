@@ -6,7 +6,7 @@
     </div>
 
     <create-sticky-modal></create-sticky-modal>
-    <cookie-yes-modal @cookiesEnabled="updateFingerPrint()"></cookie-yes-modal>
+    <cookie-yes-modal></cookie-yes-modal>
     <cookie-no-modal></cookie-no-modal>
     <data-connection-issue-modal></data-connection-issue-modal>
   </div>
@@ -27,6 +27,7 @@
 
   Vue.component('modal', modal);
   Vue.mixin(dataHandlingMixin);
+  Vue.mixin(fingerPrintMixin);
 
   export default {
     name: 'App',
@@ -38,7 +39,6 @@
       cookieNoModal,
       dataConnectionIssueModal
     },
-    mixins: [fingerPrintMixin, dataHandlingMixin],
     async created() {
       this.checkLocalCookies();
       this.getAllStickyNotes();
@@ -70,11 +70,6 @@
           });
           localStorage.setItem('fingerPrint', this.$store.state.dummyFingerPrint);
         }
-      },
-      updateFingerPrint: async function() {
-        this.$store.commit('updateFingerPrint', {
-          fingerPrint: await this.getUserFingerPrint()
-        });
       }
     }
   }

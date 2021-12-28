@@ -21,8 +21,6 @@
     import confirmModal from './confirmModal.vue';
     import sanitizeHtml from 'sanitize-html';
 
-    const axios = require('axios');
-
     export default {
         store: store,
         components: {
@@ -58,27 +56,20 @@
                 }
                 this.editNoteModalVisible = true;
             },
-            editNote(note) {
-                var sanitizedHtml = sanitizeHtml(note, {
+            editNote(editedNote) {
+                var sanitizedHtml = sanitizeHtml(editedNote, {
                     allowedTags: ['strong', 'i', 'h1', 'h2', 'h3', 'code', 'u' , 's'],
                     allowedAttributes: {}
                 });
 
-                if(note != sanitizedHtml) {
+                if(editedNote != sanitizedHtml) {
                     //Illegal content
                     this.illegalContent = true;
                 } else {
                     //Good content
                     this.illegalContent = false;
-
-                    return axios.post('http://localhost:3000/stickyNoteEdit', {
-                        noteID: this.note._id,
-                        note: note.note
-                    }).then(() => {
+                    this.editStickyNote(this.note, editedNote).then(() => {
                         this.editNoteModalVisible = false;
-                        //this.note = this.editedNote;
-                    }).catch(err => {
-                        console.error(err);
                     });
                 }
             }

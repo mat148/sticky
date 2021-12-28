@@ -16,19 +16,17 @@
             }
         },
         methods: {
-            async checkLocalCookies() {
+            checkLocalCookies() {
                 if(navigator.cookieEnabled) {
                     //Browser cookies are enabled
                     var localCookiesEnabled = localStorage.getItem('cookiesEnabled');
                     
-                    if(localCookiesEnabled == 'true') {
-                        //console.log(fingerPrint);
-                    } else {
+                    if(localCookiesEnabled != 'true') {
                         this.cookieYesModalVisable = true;
                     }
                 }
             },
-            enableCookies() {
+            async enableCookies() {
                 this.cookieYesModalVisable = false;
                 this.$store.commit('updateCookiesEnabled', {
                     cookieEnabled: true
@@ -36,7 +34,9 @@
 
                 localStorage.setItem('cookiesEnabled', true);
 
-                this.$emit('cookiesEnabled');
+                this.$store.commit('updateFingerPrint', {
+                    fingerPrint: await this.getUserFingerPrint()
+                });
             },
             disableCookies() {
                 this.cookieYesModalVisable = false;

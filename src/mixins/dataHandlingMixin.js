@@ -1,6 +1,5 @@
 //This global mixin handles getting, editing, and deleting the data both locally and through the API.
 const axios = require('axios');
-//const _ = require('underscore');
 
 export default {
     methods: {
@@ -21,7 +20,6 @@ export default {
         },
         getAllStickyNotes() {
             this.apiGetAllStickyNotes().then(response => {
-                //this.$store.state.stickyNotes = response.data;
                 this.$store.commit('replaceAllStickyNotes', {
                     data: response.data
                 });
@@ -35,8 +33,6 @@ export default {
                     note: message,
                     fingerPrint: fingerPrint
                 }).then((response) => {
-                    //console.log(this.$store.state.stickyNotes);
-                    //this.$store.state.stickyNotes.push(response.data);
                     this.$store.commit('addStickyNote', {
                         note: response.data
                     });
@@ -44,7 +40,6 @@ export default {
                     resolve(response);
                 }).catch(err => {
                     reject(console.log(err));
-                    //this.$store.state.dataConnectionIssueVisible = true;
                     this.$store.commit('toggleDataConnectionIssueModal');
                 });
             });
@@ -58,6 +53,20 @@ export default {
                 });
             }).catch(err => {
                 console.error(err);
+                this.$store.commit('toggleDataConnectionIssueModal');
+            });
+        },
+        editStickyNote(noteObect, editedNote) {
+            return new Promise((resolve, reject) => {
+                axios.post('http://localhost:3000/stickyNoteEdit', {
+                    noteID: noteObect._id,
+                    note: editedNote
+                }).then(() => {
+                    resolve();
+                }).catch(err => {
+                    reject(console.error(err));
+                    this.$store.commit('toggleDataConnectionIssueModal');
+                });
             });
         },
         updateStickyNotes(apiNote) {
