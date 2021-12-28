@@ -10,6 +10,7 @@
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^3.3.2",
     "axios": "^0.24.0",
+    "bad-words": "^3.0.4",
     "core-js": "^3.6.5",
     "es6-promise": "^4.2.8",
     "sanitize-html": "^2.6.1",

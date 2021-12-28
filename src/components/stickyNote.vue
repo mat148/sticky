@@ -5,7 +5,7 @@
         <button @click="editModal" v-if="showButton()">Edit note</button>
 
         <div class="stickyNote__edit" v-if="editNoteModalVisible">
-            <button class="stickyNote__edit-close" @click="editNoteModalVisible = false">X</button>
+            <button class="stickyNote__edit-close" @click="closeEditNoteModal()">X</button>
             <textarea v-model="editedNote"></textarea>
             <button class="stickyNote__edit-done" @click="editNote(editedNote)">Done</button>
             <span v-if="illegalContent" class="stickyNote__edit-alert">Illegal content, please try again.</span>
@@ -22,6 +22,9 @@
     import { store } from '../store/store';
     import confirmModal from './confirmModal.vue';
     import sanitizeHtml from 'sanitize-html';
+
+    var Filter = require('bad-words'),
+    filter = new Filter();
 
     export default {
         store: store,
@@ -64,7 +67,9 @@
                     allowedAttributes: {}
                 });
 
-                if(editedNote != sanitizedHtml) {
+                if(sanitizedHtml != '') sanitizedHtml = filter.clean(sanitizedHtml);
+
+                if(editedNote != sanitizedHtml || sanitizedHtml == '') {
                     //Illegal content
                     this.illegalContent = true;
                 } else {
@@ -74,6 +79,11 @@
                         this.editNoteModalVisible = false;
                     });
                 }
+            },
+            closeEditNoteModal() {
+                this.editedNote = '';
+                this.editNoteModalVisible = false;
+                this.illegalContent = false;
             },
             reportNote() {
                 this.reportStickyNote(this.note);
