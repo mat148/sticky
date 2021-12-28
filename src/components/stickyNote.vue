@@ -1,5 +1,5 @@
 <template>
-    <div class="stickyNote">
+    <div class="stickyNote" v-if="!this.note.reported">
         {{ this.note.fingerPrint }}
         <div v-if="editNoteModalVisible == false" class="stickyNote__content" v-html="computedNote"></div>
         <button @click="editModal" v-if="showButton()">Edit note</button>
@@ -13,6 +13,8 @@
 
         <button @click="confirmModalVisible = true" v-if="showButton()">Delete note</button>
         <confirm-modal v-if="this.confirmModalVisible == true" @confirm="confirm" @deny="deny"></confirm-modal>
+
+        <button @click="reportNote()">Report</button>
     </div>
 </template>
 
@@ -72,6 +74,9 @@
                         this.editNoteModalVisible = false;
                     });
                 }
+            },
+            reportNote() {
+                this.reportStickyNote(this.note);
             }
         },
         computed: {

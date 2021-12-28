@@ -34,6 +34,13 @@ export const store = new Vuex.Store({
             const { index, note } = payload;
             state.stickyNotes[index] = note;
         },
+        reportStickyNote: (state, payload) => {
+            const { reportedNote } = payload;
+            var id = reportedNote._id;
+            var  index = _.indexOf(state.stickyNotes, _.findWhere(state.stickyNotes, {_id: id}));
+
+            state.stickyNotes[index].reported = true;
+        },
         updateFingerPrint: (state, payload) => {
             const { fingerPrint } = payload;
             state.fingerPrint = fingerPrint;

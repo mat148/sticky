@@ -103,6 +103,18 @@ export default {
                     });
                 }
             });
+        },
+        reportStickyNote(note) {
+            return axios.post('http://localhost:3000/stickyNoteReport', {
+                noteID: note._id
+            }).then(() => {
+                this.$store.commit('reportStickyNote', {
+                    reportedNote: note
+                });
+            }).catch(err => {
+                console.error(err);
+                this.$store.commit('toggleDataConnectionIssueModal');
+            });
         }
     }
 }
