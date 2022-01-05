@@ -1,16 +1,20 @@
 <template>
   <div id="app">
-    {{this.$store.state.fingerPrint}}
-    <div class="stickyBoard">
+    <!--{{this.$store.state.fingerPrint}}-->
+    <!--<div class="stickyBoard">
       <sticky-note v-for="sticky in this.$store.state.stickyNotes" :key="sticky._id" :note="sticky"></sticky-note>
     </div>
 
-    <button @click="this.updateStickyNotes">Update list</button>
+    <button @click="this.updateStickyNotes">Update list</button>-->
 
-    <create-sticky-modal></create-sticky-modal>
+    <div class="background">
+      <board></board>
+    </div>
+
+    <!--<create-sticky-modal></create-sticky-modal>
     <cookie-yes-modal></cookie-yes-modal>
     <cookie-no-modal></cookie-no-modal>
-    <data-connection-issue-modal></data-connection-issue-modal>
+    <data-connection-issue-modal></data-connection-issue-modal>-->
   </div>
 </template>
 
@@ -18,12 +22,14 @@
   import Vue from 'vue';
   import 'es6-promise/auto';
   import { store } from './store/store';
-  import stickyNote from './components/stickyNote.vue';
   import modal from './components/modal-template.vue';
-  import createStickyModal from './components/createStickyModal.vue';
-  import cookieYesModal from './components/cookieYesModal.vue';
-  import cookieNoModal from './components/cookieNoModal.vue';
-  import dataConnectionIssueModal from './components/dataConnectionIssueModal.vue';
+  //import createStickyModal from './components/createStickyModal.vue';
+  //import cookieYesModal from './components/cookieYesModal.vue';
+  //mport cookieNoModal from './components/cookieNoModal.vue';
+  //import dataConnectionIssueModal from './components/dataConnectionIssueModal.vue';
+
+  import board from './components/board.vue';
+
   import fingerPrintMixin from './mixins/fingerPrintMixin';
   import dataHandlingMixin from './mixins/dataHandlingMixin';
 
@@ -35,11 +41,12 @@
     name: 'App',
     store: store,
     components: {
-      stickyNote,
-      createStickyModal,
-      cookieYesModal,
-      cookieNoModal,
-      dataConnectionIssueModal
+      board,
+      //stickyNote,
+      //createStickyModal,
+      //cookieYesModal,
+      //cookieNoModal,
+      //dataConnectionIssueModal
     },
     async created() {
       this.checkLocalCookies();
@@ -78,3 +85,16 @@
     }
   }
 </script>
+
+<style lang="less">
+  #app::-webkit-scrollbar {
+    display: none;
+  }
+
+  .background {
+    background: #57707A;
+    padding: 100px;
+    height: calc((100vh * 3) - 200px);
+    width: calc((100vw * 3) - 200px);
+  }
+</style>
