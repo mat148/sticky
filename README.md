@@ -16,7 +16,7 @@ https://www.notion.so/Learn-Vue-Post-it-board-8a1c8d2b132943eaa5446ae506831f13
     - Episode 2.1: 
 - Episode 3: No episode(was on vacation with spoty wifi)
 - Episode 4: Deleted
-- Episode 5: https://youtu.be/mFAs1Dg4Ksg
+- Episode 5: https://youtu.be/al2_hVDubgM
 
 ## Project setup
 ```
