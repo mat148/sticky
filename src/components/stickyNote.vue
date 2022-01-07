@@ -1,5 +1,5 @@
 <template>
-    <div class="stickyNote absolute" v-if="!this.note.reported" :style="{'transform':'rotate(' + computedRange + 'deg)', 'top': 'calc(' + computedPosition.y + '% - ' + computedPosition.yOff + 'px)', 'left': 'calc(' + computedPosition.x + '% - ' + computedPosition.xOff + 'px)'}">
+    <div class="stickyNote" v-if="!this.note.reported">
         {{ this.note.fingerPrint }}
         <div v-if="editNoteModalVisible == false" class="stickyNote__content" v-html="computedNote"></div>
         <button @click="editModal" v-if="showButton()">Edit note</button>
@@ -23,7 +23,6 @@
     import confirmModal from './confirmModal.vue';
     import sanitizeHtml from 'sanitize-html';
 
-    const _ = require('underscore');
     var Filter = require('bad-words'),
     filter = new Filter();
 
@@ -95,48 +94,6 @@
                 if(this.editedNote != '') {
                     return this.editedNote;
                 } else return this.note.note;
-            },
-            computedRange: function() {
-                if((Math.random() * (1 - 0) + 0) == 0) {
-                    return (Math.random() * (360 - 348) + 348);
-                } else {
-                    return (Math.random() * (12 - 0) + 0);
-                }
-            },
-            computedPosition: function() {
-                let data = {};
-                data.x = Math.random() * (100 - 0) + 0;
-                data.y = Math.random() * (100 - 0) + 0;
-
-                if(data.y < 3 && data.y > 0) {data.yOff = -48;}
-                else if(data.y > 25) {data.yOff = 300;}
-                else data.yOff = 0;
-
-                _.each(this.$store.state.stickyNotes, function(note) {
-                    if (note.position) {
-                        let localYPos = note.position.y;
-                        let offset = 5;
-
-                        //console.log(data.y, (localYPos - offset), (localYPos + offset));
-                        //console.log(data.y > (localYPos - offset) && data.y < (localYPos + offset));
-                        console.log(data.y > (localYPos - offset), data.y < (localYPos + offset));
-                        if(data.y > (localYPos - offset) && data.y < (localYPos + offset)) {
-                            //console.log(data.y, localYPos);
-                        }
-                    }
-                });
-
-                if(data.x < 3 && data.x > 0) {data.xOff = -48;}
-                else if(data.x > 25) {data.xOff = 300;}
-                else data.xOff = 0;
-
-                this.$store.commit('updateStickyNotePosition', {
-                    note: this.note,
-                    x: data.x,
-                    y: data.y
-                });
-
-                return data
             }
         }
     }
@@ -146,11 +103,8 @@
     @import '../styles/variables.less';
 
     .stickyNote {
-        background: @yellow;
-        height: 20%;
-        width: 20%;
-        max-height: 300px;
-        max-width: 300px;
-        box-shadow: 0 3px 12px 0px rgb(0 0 0 / 30%);
+        background: @stickyYellow;
+        flex: 1 1 25%;
+        height: 370px;
     }
 </style>

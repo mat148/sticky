@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="flex flex-column">
     <!--{{this.$store.state.fingerPrint}}-->
     <!--<div class="stickyBoard">
       <sticky-note v-for="sticky in this.$store.state.stickyNotes" :key="sticky._id" :note="sticky"></sticky-note>
@@ -7,9 +7,10 @@
 
     <button @click="this.updateStickyNotes">Update list</button>-->
 
-    <div class="background">
-      <board></board>
-    </div>
+    <board class="flex-item-1"></board>
+    <footer class="flex flex-justify-right">
+      <a href="#" target="_blank">About the developer</a>
+    </footer>
 
     <!--<create-sticky-modal></create-sticky-modal>
     <cookie-yes-modal></cookie-yes-modal>
@@ -87,14 +88,19 @@
 </script>
 
 <style lang="less">
-  #app::-webkit-scrollbar {
-    display: none;
-  }
+  @import './styles/variables.less';
 
-  .background {
-    background: #57707A;
-    padding: 100px;
-    height: calc((100vh * 3) - 200px);
-    width: calc((100vw * 3) - 200px);
+  body {margin: 0;}
+
+  #app {
+    height: calc(100vh - 24px);
+    width: calc(100vw - 48px);
+    background: @background;
+    padding: 24px 24px 0 24px;
+  }
+  
+  footer {
+    height: 48px;
+    line-height: 48px;
   }
 </style>
