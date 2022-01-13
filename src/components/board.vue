@@ -33,6 +33,7 @@
         }
         &-content {
             padding: 24px 120px 0 48px;
+            overflow: auto;
         }
     }
 </style>
