@@ -9,6 +9,7 @@ export default {
                 axios
                 .get('http://localhost:3000/getAllSticky')
                 .then(response => {
+                    console.log(response);
                     //handle success
                     resolve(response);
                 })

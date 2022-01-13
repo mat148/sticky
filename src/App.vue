@@ -1,21 +1,21 @@
 <template>
   <div id="app" class="flex flex-column">
-    <!--{{this.$store.state.fingerPrint}}-->
+    {{this.$store.state.fingerPrint}}
     <!--<div class="stickyBoard">
       <sticky-note v-for="sticky in this.$store.state.stickyNotes" :key="sticky._id" :note="sticky"></sticky-note>
-    </div>
+    </div>-->
 
-    <button @click="this.updateStickyNotes">Update list</button>-->
+    <button @click="this.updateStickyNotes">Update list</button>
 
     <board class="flex-item-1"></board>
     <footer class="flex flex-justify-right">
       <a href="#" target="_blank">About the developer</a>
     </footer>
 
-    <!--<create-sticky-modal></create-sticky-modal>
+    <create-sticky-modal></create-sticky-modal>
     <cookie-yes-modal></cookie-yes-modal>
     <cookie-no-modal></cookie-no-modal>
-    <data-connection-issue-modal></data-connection-issue-modal>-->
+    <data-connection-issue-modal></data-connection-issue-modal>
   </div>
 </template>
 
@@ -24,12 +24,13 @@
   import 'es6-promise/auto';
   import { store } from './store/store';
   import modal from './components/modal-template.vue';
-  //import createStickyModal from './components/createStickyModal.vue';
-  //import cookieYesModal from './components/cookieYesModal.vue';
-  //mport cookieNoModal from './components/cookieNoModal.vue';
-  //import dataConnectionIssueModal from './components/dataConnectionIssueModal.vue';
+  import createStickyModal from './components/createStickyModal.vue';
+  import cookieYesModal from './components/cookieYesModal.vue';
+  import cookieNoModal from './components/cookieNoModal.vue';
+  import dataConnectionIssueModal from './components/dataConnectionIssueModal.vue';
 
   import board from './components/board.vue';
+  //import stickyNote from './components/stickyNote.vue';
 
   import fingerPrintMixin from './mixins/fingerPrintMixin';
   import dataHandlingMixin from './mixins/dataHandlingMixin';
@@ -44,10 +45,10 @@
     components: {
       board,
       //stickyNote,
-      //createStickyModal,
-      //cookieYesModal,
-      //cookieNoModal,
-      //dataConnectionIssueModal
+      createStickyModal,
+      cookieYesModal,
+      cookieNoModal,
+      dataConnectionIssueModal
     },
     async created() {
       this.checkLocalCookies();
@@ -55,11 +56,11 @@
 
       //this.updateStickyNotes();
 
-      const self = this;
+      /*const self = this;
       setInterval(function(){
         self.updateStickyNotes();
         console.log('Refresh sticky notes list');
-      }, 900000);
+      }, 900000);*/
       //15000
     },
     methods: {
