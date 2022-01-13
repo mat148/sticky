@@ -61,6 +61,7 @@
         self.updateStickyNotes();
         console.log('Refresh sticky notes list');
       }, 900000);*/
+      //Every 15 minutes > 900,000 ms
       //15000
     },
     methods: {
