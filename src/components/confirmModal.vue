@@ -1,9 +1,17 @@
 <template>
     <modal>
       <template v-slot:body>
-        Are you sure you want to delete your note?  This will delete it forever!
-        <button @click="$emit('confirm')">Yes</button>
-        <button @click="$emit('deny')">No</button>
+        {{type.string}}
+        <button @click="$emit('confirm', type)">Yes</button>
+        <button @click="$emit('deny', type)">No</button>
       </template>
     </modal>
 </template>
+
+<script>
+  export default {
+    props: {
+      type: { required: true, type: Object }
+    }
+  }
+</script>

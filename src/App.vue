@@ -91,14 +91,22 @@
 
 <style lang="less">
   @import './styles/variables.less';
+  @import (css) url('https://fonts.googleapis.com/css2?family=Commissioner:wght@400;700&family=Fraunces:wght@400;700&display=swap');
 
-  body {margin: 0;}
+  body {
+    margin: 0;
+    font-family: 'Commissioner', sans-serif;
+    font-weight: 400;
+    overflow-wrap: break-word;
+  }
 
   #app {
     height: calc(100vh - 24px);
     width: calc(100vw - 48px);
     background: @background;
     padding: 24px 24px 0 24px;
+    overflow: hidden;
+    display: flex;
   }
   
   footer {
