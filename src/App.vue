@@ -99,6 +99,8 @@
     width: calc(100vw - 48px);
     background: @background;
     padding: 24px 24px 0 24px;
+    overflow: hidden;
+    display: flex;
   }
   
   footer {

@@ -1,21 +1,25 @@
 <template>
-    <div class="stickyNote" v-if="!this.note.reported">
-        {{ this.note.fingerPrint }}
-        <div v-if="editNoteModalVisible == false" class="stickyNote__content" v-html="computedNote"></div>
-        <button @click="editModal" v-if="showButton()">Edit note</button>
-
-        <div class="stickyNote__edit" v-if="editNoteModalVisible">
-            <button class="stickyNote__edit-close" @click="closeEditNoteModal()">X</button>
-            <textarea v-model="editedNote"></textarea>
-            <button class="stickyNote__edit-done" @click="editNote(editedNote)">Done</button>
-            <span v-if="illegalContent" class="stickyNote__edit-alert">Illegal content, please try again.</span>
+    <li class="stickyNote" v-if="!this.note.reported">
+        <div class="stickyNote__header">
+            <button @click="editModal" v-if="showButton()">Edit note</button>
+            <button @click="showConfirmModal(confirmModalType.delete)" v-if="showButton()">Delete note</button>
+            <button @click="showConfirmModal(confirmModalType.report)">Report</button>
         </div>
 
-        <button @click="confirmModalVisible = true" v-if="showButton()">Delete note</button>
-        <confirm-modal v-if="this.confirmModalVisible == true" @confirm="confirm" @deny="deny"></confirm-modal>
+        <div class="stickyNote__content">
+            <span>{{ this.note.fingerPrint }}</span>
+            <div v-if="editNoteModalVisible == false" class="stickyNote__content" v-html="computedNote"></div>
+            
+            <div class="stickyNote__edit" v-if="editNoteModalVisible">
+                <button class="stickyNote__edit-close" @click="closeEditNoteModal()">X</button>
+                <textarea v-model="editedNote"></textarea>
+                <button class="stickyNote__edit-done" @click="editNote(editedNote)">Done</button>
+                <span v-if="illegalContent" class="stickyNote__edit-alert">Illegal content, please try again.</span>
+            </div>
 
-        <button @click="reportNote()">Report</button>
-    </div>
+            <confirm-modal v-if="this.confirmModalVisible == true" @confirm="confirm" @deny="deny" :type="selectedModal"></confirm-modal>
+        </div>
+    </li>
 </template>
 
 <script>
@@ -36,7 +40,18 @@
                 confirmModalVisible: false,
                 editNoteModalVisible: false,
                 editedNote: '',
-                illegalContent: false
+                illegalContent: false,
+                confirmModalType: {
+                    delete: {
+                        key: 'delete',
+                        string: 'Are you sure you want to delete your note?  This will delete it forever!'
+                    },
+                    report: {
+                        key: 'report',
+                        string: 'Do you want to report this note?'
+                    },
+                },
+                selectedModal: {}
             }
         },
         props: {
@@ -50,11 +65,23 @@
                     return false
                 }
             },
-            confirm() {
-                this.confirmModalVisible = false;
-                this.deleteStickyNote(this.note);
+            showConfirmModal(type) {
+                this.confirmModalVisible = true;
+                this.selectedModal = type;
             },
-            deny() {this.confirmModalVisible = false;},
+            confirm(type) {
+                this.confirmModalVisible = false;
+
+                if(type.key === 'delete') {
+                    this.deleteStickyNote(this.note);
+                }
+                if(type.key === 'report') {
+                    this.reportStickyNote(this.note);
+                }
+            },
+            deny() {
+                this.confirmModalVisible = false;
+            },
             editModal: function() {
                 if(this.editedNote == '') {
                     this.editedNote = this.note.note;
@@ -84,9 +111,6 @@
                 this.editedNote = '';
                 this.editNoteModalVisible = false;
                 this.illegalContent = false;
-            },
-            reportNote() {
-                this.reportStickyNote(this.note);
             }
         },
         computed: {
@@ -104,7 +128,12 @@
 
     .stickyNote {
         background: @stickyYellow;
-        flex: 1 1 25%;
-        height: 370px;
+        overflow: hidden;
+        border: 4px solid @black;
+        border-radius: 24px;
+        &__header {
+            height: 32px;
+            border-bottom: 4px solid @black;
+        }
     }
 </style>

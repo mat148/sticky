@@ -3,9 +3,9 @@
         <div class="board-filter flex">
             <span>Sort by:</span>
         </div>
-        <div class="board-content flex-item-1 flex flex-wrap">
+        <ul class="board-content flex-item-1">
             <sticky-note v-for="sticky in this.$store.state.stickyNotes" :key="sticky._id" :note="sticky"></sticky-note>
-        </div>
+        </ul>
     </div>
 </template>
 
@@ -25,15 +25,30 @@
     .board {
         background: @boardBackground;
         border-radius: 40px;
-        border: 6px solid @black;
+        border: 5px solid @black;
         overflow: hidden;
         &-filter {
             height: 48px;
             background: @black;
         }
         &-content {
-            padding: 24px 120px 0 48px;
+            padding: 24px;
             overflow: auto;
+            margin: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-auto-rows: 300px;
+            grid-gap: 12px;
+
+            @media only screen and (max-width: 1200px) {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            @media only screen and (max-width: 767px) {
+                grid-template-columns: 1fr 1fr;
+            }
+            @media only screen and (max-width: 375px) {
+                grid-template-columns: 1fr;
+            }
         }
     }
 </style>
