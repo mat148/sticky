@@ -39,6 +39,7 @@
             grid-template-columns: 1fr 1fr 1fr 1fr;
             grid-auto-rows: 300px;
             grid-gap: 12px;
+            list-style-type: none;
 
             @media only screen and (max-width: 1200px) {
                 grid-template-columns: 1fr 1fr 1fr;

@@ -1,23 +1,27 @@
 <template>
     <li class="stickyNote" v-if="!this.note.reported">
-        <div class="stickyNote__header">
-            <button @click="editModal" v-if="showButton()">Edit note</button>
-            <button @click="showConfirmModal(confirmModalType.delete)" v-if="showButton()">Delete note</button>
-            <button @click="showConfirmModal(confirmModalType.report)">Report</button>
-        </div>
-
-        <div class="stickyNote__content">
-            <span>{{ this.note.fingerPrint }}</span>
-            <p v-if="editNoteModalVisible == false" v-html="computedNote"></p>
-            
-            <div class="stickyNote__edit" v-if="editNoteModalVisible">
-                <button class="stickyNote__edit-close" @click="closeEditNoteModal()">X</button>
-                <textarea v-model="editedNote"></textarea>
-                <button class="stickyNote__edit-done" @click="editNote(editedNote)">Done</button>
-                <span v-if="illegalContent" class="stickyNote__edit-alert">Illegal content, please try again.</span>
+        <div class="stickyNote__inner flex flex-column">
+            <div class="stickyNote__header flex flex-justify-right">
+                <button @click="editModal" v-if="showButton()">Edit note</button>
+                <button @click="showConfirmModal(confirmModalType.delete)" v-if="showButton()">Delete note</button>
+                <button @click="showConfirmModal(confirmModalType.report)" v-if="editNoteModalVisible == false">Report</button>
             </div>
 
-            <confirm-modal v-if="this.confirmModalVisible == true" @confirm="confirm" @deny="deny" :type="selectedModal"></confirm-modal>
+            <div class="stickyNote__content flex-item-1">
+                <template v-if="editNoteModalVisible == false">
+                    <span>{{ this.note.fingerPrint }}</span>
+                    <p v-html="computedNote" class="stickyNote__content-user-content"></p>
+                </template>
+                
+                <div class="stickyNote__edit" v-if="editNoteModalVisible">
+                    <button class="stickyNote__edit-close" @click="closeEditNoteModal()">X</button>
+                    <textarea v-model="editedNote"></textarea>
+                    <button class="stickyNote__edit-done" @click="editNote(editedNote)">Done</button>
+                    <span v-if="illegalContent" class="stickyNote__edit-alert">Illegal content, please try again.</span>
+                </div>
+
+                <confirm-modal v-if="this.confirmModalVisible == true" @confirm="confirm" @deny="deny" :type="selectedModal"></confirm-modal>
+            </div>
         </div>
     </li>
 </template>
@@ -127,13 +131,39 @@
     @import '../styles/variables.less';
 
     .stickyNote {
-        background: @stickyYellow;
+        padding: 0 15px 15px 0;
+        position: relative;
         overflow: hidden;
-        border: 4px solid @black;
-        border-radius: 24px;
+        &::before {
+            content: '';
+            display: block;
+            background: @black;
+            height: calc(100% - 15px);
+            width: calc(100% - 15px);
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            border-radius: 24px;
+        }
+        &__inner {
+            overflow: hidden;
+            border: 4px solid @black;
+            border-radius: 24px;
+            width: calc(100% - 8px);
+            height: calc(100% - 8px);
+            position: relative;
+            background: @stickyYellow;
+        }
+
         &__header {
             height: 32px;
             border-bottom: 4px solid @black;
+        }
+        &__content {
+            padding: 24px 24px 80px 24px;
+            &-user-content {
+                margin: 0;
+            }
         }
     }
 </style>
