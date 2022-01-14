@@ -8,7 +8,7 @@
 
         <div class="stickyNote__content">
             <span>{{ this.note.fingerPrint }}</span>
-            <div v-if="editNoteModalVisible == false" class="stickyNote__content" v-html="computedNote"></div>
+            <p v-if="editNoteModalVisible == false" v-html="computedNote"></p>
             
             <div class="stickyNote__edit" v-if="editNoteModalVisible">
                 <button class="stickyNote__edit-close" @click="closeEditNoteModal()">X</button>
