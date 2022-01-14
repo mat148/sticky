@@ -23,6 +23,10 @@
   import Vue from 'vue';
   import 'es6-promise/auto';
   import { store } from './store/store';
+  import { library } from '@fortawesome/fontawesome-svg-core';
+  import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
+  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
   import modal from './components/modal-template.vue';
   import createStickyModal from './components/createStickyModal.vue';
   import cookieYesModal from './components/cookieYesModal.vue';
@@ -38,6 +42,9 @@
   Vue.component('modal', modal);
   Vue.mixin(dataHandlingMixin);
   Vue.mixin(fingerPrintMixin);
+
+  library.add(faUserSecret);
+  Vue.component('font-awesome-icon', FontAwesomeIcon)
 
   export default {
     name: 'App',

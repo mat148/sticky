@@ -2,7 +2,7 @@
     <li class="stickyNote" v-if="!this.note.reported">
         <div class="stickyNote__inner flex flex-column">
             <div class="stickyNote__header flex flex-justify-right">
-                <button @click="editModal" v-if="showButton()">Edit note</button>
+                <button @click="editModal" v-if="showButton()">Edit note<font-awesome-icon icon="user-secret"></font-awesome-icon></button>
                 <button @click="showConfirmModal(confirmModalType.delete)" v-if="showButton()">Delete note</button>
                 <button @click="showConfirmModal(confirmModalType.report)" v-if="editNoteModalVisible == false">Report</button>
             </div>
