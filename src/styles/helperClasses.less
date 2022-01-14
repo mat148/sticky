@@ -42,7 +42,9 @@
 
 //BUTTONS
 button {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     padding: 0 12px;
     margin: 0;
@@ -62,4 +64,10 @@ button {
     font-family: 'Fraunces', serif;
     font-weight: 400;
     border-radius: 6px;
+    &.icon {
+        font-size: 0;
+        svg {
+            font-size: 12px;
+        }
+    }
 }
