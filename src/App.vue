@@ -24,7 +24,7 @@
   import 'es6-promise/auto';
   import { store } from './store/store';
   import { library } from '@fortawesome/fontawesome-svg-core';
-  import { faPen, faTrash, faFlag, faLongArrowAltUp, faHeart } from '@fortawesome/free-solid-svg-icons';
+  import { faPen, faTrash, faFlag, faLongArrowAltUp, faHeart, faTimes, faFingerprint } from '@fortawesome/free-solid-svg-icons';
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
   import modal from './components/modal-template.vue';
@@ -43,7 +43,7 @@
   Vue.mixin(dataHandlingMixin);
   Vue.mixin(fingerPrintMixin);
 
-  library.add(faPen, faTrash, faFlag, faLongArrowAltUp, faHeart);
+  library.add(faPen, faTrash, faFlag, faLongArrowAltUp, faHeart, faTimes, faFingerprint);
   Vue.component('font-awesome-icon', FontAwesomeIcon);
 
   export default {

@@ -2,25 +2,35 @@
     <li class="stickyNote" v-if="!this.note.reported">
         <div class="stickyNote__inner flex flex-column">
             <div class="stickyNote__header flex flex-justify-right">
-                <button class="icon clear" @click="editModal" v-if="showButton()">Edit note<font-awesome-icon icon="pen"></font-awesome-icon></button>
-                <button class="icon clear" @click="showConfirmModal(confirmModalType.delete)" v-if="showButton()">Delete note<font-awesome-icon icon="trash"></font-awesome-icon></button>
-                <button class="icon clear" @click="showConfirmModal(confirmModalType.report)" v-if="editNoteModalVisible == false">Report<font-awesome-icon icon="flag"></font-awesome-icon></button>
+                <button class="icon clear">fingerPrint<font-awesome-icon icon="fingerprint"></font-awesome-icon></button>
+                <button class="icon clear" :disabled="confirmModalVisible" @click="editModal">
+                    <template v-if="!editNoteModalVisible">
+                        Edit note<font-awesome-icon icon="pen"></font-awesome-icon>
+                    </template>
+                    <template v-if="editNoteModalVisible">
+                        Cancel edit<font-awesome-icon icon="times"></font-awesome-icon>
+                    </template>
+                </button>
+                <button class="icon clear" :disabled="editNoteModalVisible || confirmModalVisible" @click="showConfirmModal(confirmModalType.delete)">Delete note<font-awesome-icon icon="trash"></font-awesome-icon></button>
+                <button class="icon clear" :disabled="editNoteModalVisible || confirmModalVisible" @click="showConfirmModal(confirmModalType.report)">Report<font-awesome-icon icon="flag"></font-awesome-icon></button>
             </div>
 
-            <div class="stickyNote__content flex-item-1">
+            <div class="stickyNote__content relative flex-item-1">
                 <template v-if="editNoteModalVisible == false">
-                    <span>{{ this.note.fingerPrint }}</span>
                     <p v-html="computedNote" class="stickyNote__content-user-content"></p>
                 </template>
                 
-                <div class="stickyNote__edit" v-if="editNoteModalVisible">
-                    <button class="stickyNote__edit-close" @click="closeEditNoteModal()">X</button>
-                    <textarea v-model="editedNote"></textarea>
-                    <button class="stickyNote__edit-done" @click="editNote(editedNote)">Done</button>
+                <div class="stickyNote__edit relative flex flex-column" v-if="editNoteModalVisible">
+                    <textarea v-model="editedNote" class="flex-item-1"></textarea>
+                    <div class="stickyNote__edit-button-container flex flex-justify-right">
+                        <button class="stickyNote__edit-done" @click="editNote(editedNote)">Done</button>
+                    </div>
                     <span v-if="illegalContent" class="stickyNote__edit-alert">Illegal content, please try again.</span>
                 </div>
 
                 <confirm-modal v-if="this.confirmModalVisible == true" @confirm="confirm" @deny="deny" :type="selectedModal"></confirm-modal>
+
+                <div v-if="this.$store.state.devMode" class="fingerPrint">{{ this.note.fingerPrint }}</div>
             </div>
         </div>
     </li>
@@ -87,10 +97,17 @@
                 this.confirmModalVisible = false;
             },
             editModal: function() {
-                if(this.editedNote == '') {
-                    this.editedNote = this.note.note;
+                if(this.editNoteModalVisible) {
+                    this.editedNote = '';
+                    this.editNoteModalVisible = false;
+                    this.illegalContent = false;
                 }
-                this.editNoteModalVisible = true;
+                else {
+                    if(this.editedNote == '') {
+                        this.editedNote = this.note.note;
+                    }
+                    this.editNoteModalVisible = true;
+                }
             },
             editNote(editedNote) {
                 var sanitizedHtml = sanitizeHtml(editedNote, {
@@ -110,11 +127,6 @@
                         this.editNoteModalVisible = false;
                     });
                 }
-            },
-            closeEditNoteModal() {
-                this.editedNote = '';
-                this.editNoteModalVisible = false;
-                this.illegalContent = false;
             }
         },
         computed: {
@@ -165,6 +177,24 @@
             &-user-content {
                 margin: 0;
             }
+        }
+
+        &__edit {
+            height: 100%;
+            textarea {
+                width: 100%;
+                margin: 0 0 12px 0;
+                padding: 0;
+                border: 0;
+            }
+        }
+
+
+        .fingerPrint {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
         }
     }
 </style>

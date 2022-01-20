@@ -10,7 +10,7 @@ export const store = new Vuex.Store({
         stickyNotes: [],
         fingerPrint: null,
         cookiesEnabled: false,
-        devMode: false,
+        devMode: true,
         dummyFingerPrint: null,
         dataConnectionIssueVisible: false
     },
